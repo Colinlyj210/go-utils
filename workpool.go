@@ -1,7 +1,5 @@
 package go_utils
 
-import "log"
-
 type TaskFunc func(wp *WorkPool, args ...interface{})
 
 type Task struct {
@@ -17,11 +15,10 @@ type WorkPool struct {
 	taskQueue chan *Task
 }
 
-func (workPool *WorkPool) startWork(id int) {
+func (workPool *WorkPool) startWork() {
 	for {
 		select {
 		case task := <-workPool.taskQueue:
-			log.Print("work id: ", id)
 			task.run(workPool)
 		}
 	}
@@ -40,7 +37,7 @@ func NewWorkPool(workerNum, taskQueueSize int) *WorkPool {
 		taskQueue: make(chan *Task, taskQueueSize),
 	}
 	for i := 0; i < workerNum; i++ {
-		go workPool.startWork(i)
+		go workPool.startWork()
 	}
 	return workPool
 }
