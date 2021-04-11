@@ -24,12 +24,12 @@ func (workPool *WorkPool) startWork() {
 	}
 }
 
-func (workPool *WorkPool) ExecuteTask(t *Task) {
-	workPool.taskQueue <- t
+func (workPool *WorkPool) ExecuteTask(task *Task) {
+	workPool.taskQueue <- task
 }
 
-func (workPool *WorkPool) Execute(f TaskFunc, args ...interface{}) {
-	workPool.taskQueue <- &Task{f, args}
+func (workPool *WorkPool) Execute(taskFunc TaskFunc, args ...interface{}) {
+	workPool.taskQueue <- &Task{taskFunc, args}
 }
 
 func NewWorkPool(workerNum, taskQueueSize int) *WorkPool {
